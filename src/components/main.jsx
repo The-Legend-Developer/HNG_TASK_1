@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import { useState, useEffect } from "react";
 import { githubIcon, slackIcon } from "../assets";
 import LinkCard from "./card";

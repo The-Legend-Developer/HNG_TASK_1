@@ -7,16 +7,16 @@ import Main from "./components/main";
 function App() {
   return (
     <BrowserRouter>
-      <div className="pt-12 pb-6 px-4">
+      <div className="h-screen pt-12 pb-6 px-4 flex flex-col">
         <Routes>
           <Route
             exact
             path="/"
             element={
-              <>
+              <div>
                 <Header />
                 <Main />
-              </>
+              </div>
             }
           />
           <Route path="/contact" element={<Contact />} />

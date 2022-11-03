@@ -12,3 +12,13 @@ body {
 .bg-shade:focus {
   box-shadow: 0 0 20px rgb(128, 128, 128, 0.3);
 }
+
+.bg-form:active,
+.bg-form:hover,
+.bg-form:focus {
+  box-shadow: 0 0 10px rgba(132, 202, 255, 1);
+}
+
+.view {
+  min-height: 70%;
+}
