@@ -1,42 +1,44 @@
-import Input from "./input";
+import { useState } from "react";
 
 function Contact() {
-  const contactInput = [
-    {
-      id: "firstname",
-      type: "text",
-      hint: "First name must not be empty",
-      name: "First Name",
-      placeholder: "Enter your first name",
-    },
-    {
-      id: "lastname",
-      type: "text",
-      hint: "Last name must not be empty",
-      name: "Last Name",
-      placeholder: "Enter your last name",
-    },
-    {
-      id: "email",
-      type: "email",
-      hint: "Must be a valid email",
-      name: "Email",
-      placeholder: "yourname@email.com",
-    },
-    {
-      id: "message",
-      hint: "Please enter a message",
-      name: "Message",
-      placeholder:
-        "Send me a message and I'll reply you as soon as possible...",
-    },
-  ];
+  const [formState, setFormState] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+  });
+
+  const [formError, setFormError] = useState({
+    firstname: false,
+    lastname: false,
+    email: false,
+    message: false,
+  });
+
+  const [agreed, setAgreed] = useState(false);
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const id = e.target.id;
+
+    setFormState((prev) => ({
+      ...prev,
+      [id]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="view w-11/12 md:w-8/12 xl:w-5/12 m-auto">
       <h1 className="text-4xl font-bold mb-4">Contact Me</h1>
       <p>Hi there, contact me to ask me about anything you have in mind.</p>
-      <form className="mt-5 lg:mt-12 flex-col flex gap-4">
+      <form
+        className="mt-5 lg:mt-12 flex-col flex gap-4"
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex flex-col lg:w-1/2">
             <label htmlFor="firstname">First Name</label>
@@ -44,6 +46,8 @@ function Contact() {
               id="firstname"
               className="border rounded-lg px-3 py-2 mt-2 focus:outline outline-sky-200"
               placeholder="Enter your first name"
+              value={formState.firstname}
+              onChange={(e) => handleChange(e)}
             />
           </div>
           <div className="flex flex-col lg:w-1/2">
@@ -52,6 +56,8 @@ function Contact() {
               id="lastname"
               className="border rounded-lg px-3 py-2 mt-2 focus:outline outline-sky-200"
               placeholder="Enter your last name"
+              value={formState.lastname}
+              onChange={(e) => handleChange(e)}
             />
           </div>
         </div>
@@ -62,6 +68,8 @@ function Contact() {
             type="email"
             className="border rounded-lg px-3 py-2 mt-2 focus:outline outline-sky-200"
             placeholder="youremail@gmail.com"
+            value={formState.email}
+            onChange={(e) => handleChange(e)}
           />
         </div>
         <div className="flex flex-col">
@@ -70,10 +78,39 @@ function Contact() {
             id="message"
             className="border rounded-lg px-3 py-2 mt-2 h-32 focus:outline outline-sky-200"
             placeholder="Send me a message and I'll reply you as soon as possible..."
+            value={formState.message}
+            onChange={(e) => handleChange(e)}
           />
         </div>
-        <div className="flex gap-3 lg:items-center mb-4">
-          <div className="h-5 w-5 border rounded-md cursor-pointer bg-form"></div>
+        <div
+          className="flex gap-3 lg:items-center mb-4 cursor-pointer"
+          onClick={() => setAgreed((prev) => !prev)}
+        >
+          <div
+            className={
+              agreed
+                ? "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center border-sky-600"
+                : "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
+            }
+          >
+            {agreed ? (
+              <svg
+                width="12"
+                height="9"
+                viewBox="0 0 12 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.6668 1.5L4.25016 7.91667L1.3335 5"
+                  stroke="#1570EF"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : null}
+          </div>
           <p className="w-full">
             You agree to providing your data to {`{name}`} who may contact you.
           </p>
