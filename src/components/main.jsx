@@ -35,6 +35,11 @@ function Main() {
       href: "https://books.zuri.team/design-rules",
       id: "book__design",
     },
+    {
+      title: "Contact Me",
+      href: "/contact",
+      id: "contact",
+    },
   ]);
 
   const [selected, setSelected] = useState();
