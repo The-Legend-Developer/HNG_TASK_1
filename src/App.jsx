@@ -7,20 +7,22 @@ import Main from "./components/main";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <div className="pt-12 pb-6 px-4">
-              <Header />
-              <Main />
-            </div>
-          }
-        />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-      <Footer />
+      <div className="pt-12 pb-6 px-4">
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <>
+                <Header />
+                <Main />
+              </>
+            }
+          />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }

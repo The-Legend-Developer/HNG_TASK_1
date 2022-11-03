@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { shareIcon } from "../assets";
 
 function LinkCard({ id, title, href, linkSwiped, swipeHandler, handleCopied }) {
@@ -51,20 +52,37 @@ function LinkCard({ id, title, href, linkSwiped, swipeHandler, handleCopied }) {
       onTouchMove={(e) => handleTouchMove(e)}
       onTouchEnd={() => handleTouchEnd()}
     >
-      <a
-        id={id}
-        style={{
-          height:
-            position.height === "auto"
-              ? position.height
-              : position.height + "px",
-          transition: "height 250ms ease-in-out",
-        }}
-        className="w-full rounded-md bg-gray-200 focus:bg-gray-200 hover:bg-gray-300 font-bold text-center py-5"
-        href={href}
-      >
-        {title}
-      </a>
+      {id !== "contact" ? (
+        <a
+          id={id}
+          style={{
+            height:
+              position.height === "auto"
+                ? position.height
+                : position.height + "px",
+            transition: "height 250ms ease-in-out",
+          }}
+          className="w-full rounded-md bg-gray-200 focus:bg-gray-200 hover:bg-gray-300 font-bold text-center py-5"
+          href={href}
+        >
+          {title}
+        </a>
+      ) : (
+        <Link
+          id={id}
+          style={{
+            height:
+              position.height === "auto"
+                ? position.height
+                : position.height + "px",
+            transition: "height 250ms ease-in-out",
+          }}
+          className="w-full rounded-md bg-gray-200 focus:bg-gray-200 hover:bg-gray-300 font-bold text-center py-5"
+          to={href}
+        >
+          {title}
+        </Link>
+      )}
       {linkSwiped ? (
         <div
           className="lg:hidden w-8 h-8 rounded-full border-dotted border-gray-400 border flex justify-center"
