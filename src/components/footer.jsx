@@ -2,7 +2,7 @@ import { I4GIcon, zuriIcon } from "../assets";
 
 function Footer() {
   return (
-    <footer className="flex flex-col justify-between gap-4 lg:w-10/12 lg:flex-row mx-auto pt-6 border-t">
+    <footer className="flex flex-col justify-between gap-4 w-10/12 lg:flex-row mx-auto mt-8 pt-6 border-t">
       <div>
         <img src={zuriIcon} alt="Zuri" />
       </div>

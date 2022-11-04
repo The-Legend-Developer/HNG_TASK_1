@@ -19,17 +19,18 @@ function Contact() {
   const handleChange = (e) => {
     e.preventDefault();
     const id = e.target.id;
+    const inputValue = e.target.value;
 
     setFormState((prev) => ({
       ...prev,
-      [id]: e.target.value,
+      [id]: inputValue,
     }));
 
-    verifyValue(e, id);
+    verifyValue(inputValue, id);
   };
 
-  const verifyValue = (e, id) => {
-    if (!e.target.value || e.target.value.length === 0) {
+  const verifyValue = (value, id) => {
+    if (!value || value.length === 0) {
       setErrorMessage((prev) => ({
         ...prev,
         [id]: `Please enter a ${id}`,
@@ -40,10 +41,10 @@ function Contact() {
     switch (id) {
       case "firstname":
       case "lastname":
-        if (!e.target.value.match(/^[a-zA-Z\s]+$/)) {
+        if (!value.match(/^[a-zA-Z\s]+$/)) {
           setErrorMessage((prev) => ({
             ...prev,
-            [id]: `Please enter a ${id}`,
+            [id]: `Wrong Format, Alphabets only`,
           }));
         } else {
           setErrorMessage((prev) => ({
@@ -57,7 +58,7 @@ function Contact() {
         const mail_format =
           /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
-        if (!e.target.value.match(mail_format)) {
+        if (!value.match(mail_format)) {
           setErrorMessage((prev) => ({
             ...prev,
             [id]: `Please enter a ${id}`,
@@ -75,6 +76,21 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    function verifyComplete(arr) {
+      return Object.values(arr).every((element) => {
+        element !== "";
+      });
+    }
+
+    if (verifyComplete(errorMessages)) {
+      console.log("michael done");
+    } else {
+      const objName = Object.getOwnPropertyNames(formState);
+      Object.values(formState).map((item, index) => {
+        verifyValue(item, objName[index]);
+      });
+    }
   };
 
   function joinClass(...classes) {

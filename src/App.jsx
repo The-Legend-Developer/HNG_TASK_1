@@ -7,7 +7,7 @@ import Main from "./components/main";
 function App() {
   return (
     <BrowserRouter>
-      <div className="h-screen pt-12 pb-6 px-4 flex flex-col">
+      <div className="min-h-screen pt-12 pb-6 px-4 flex flex-col">
         <Routes>
           <Route
             exact
