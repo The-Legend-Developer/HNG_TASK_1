@@ -18,6 +18,8 @@ function Contact() {
     agreed: "",
   });
 
+  const [formResponse, setResponse] = useState(false);
+
   const handleChange = (e) => {
     e.preventDefault();
     const id = e.target.id;
@@ -101,7 +103,18 @@ function Contact() {
       Object.values(arr).every((element) => element !== "" && element);
 
     if (verifyComplete(formState)) {
-      console.log("michael done");
+      setResponse(true);
+
+      setFormState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        message: "",
+        agreed: false,
+      });
+      setTimeout(() => {
+        setResponse(false);
+      }, 1000);
     } else {
       const objName = Object.getOwnPropertyNames(formState);
       Object.values(formState).map((item, index) => {
@@ -115,7 +128,15 @@ function Contact() {
   }
 
   return (
-    <div className="view w-11/12 md:w-8/12 xl:w-5/12 m-auto">
+    <div className="view w-11/12 md:w-8/12 xl:w-5/12 m-auto relative">
+      <p
+        className={joinClass(
+          formResponse ? "fixed" : "hidden",
+          "top-6 left-1/2 -translate-x-1/2 text-sm bg-gray-300 px-4 py-3 rounded-full font-bold"
+        )}
+      >
+        We will get back to you shortly
+      </p>
       <h1 className="text-4xl font-bold mb-4">Contact Me</h1>
       <p>Hi there, contact me to ask me about anything you have in mind.</p>
       <form
