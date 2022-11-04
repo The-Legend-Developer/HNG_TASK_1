@@ -10,15 +10,18 @@ function Contact() {
 
   const [formError, setFormError] = useState({
     firstname: false,
-    firstname_message: "",
     lastname: false,
-    lastname_message: "",
     email: false,
-    email_message: "",
     message: false,
-    message_message: "",
     agreed: false,
-    agreed_message: "",
+  });
+
+  const [errorMessages, setErrorMessage] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+    agreed: "",
   });
 
   const handleChange = (e) => {
@@ -38,7 +41,11 @@ function Contact() {
       setFormError((prev) => ({
         ...prev,
         [id]: true,
-        [`${id}_message`]: `Please enter a ${id}`,
+      }));
+
+      setErrorMessage((prev) => ({
+        ...prev,
+        [id]: `Please enter a ${id}`,
       }));
       return;
     }
@@ -50,13 +57,21 @@ function Contact() {
           setFormError((prev) => ({
             ...prev,
             [id]: true,
-            [`${id}_message`]: "Wrong format, alphabets only",
+          }));
+
+          setErrorMessage((prev) => ({
+            ...prev,
+            [id]: `Please enter a ${id}`,
           }));
         } else {
           setFormError((prev) => ({
             ...prev,
             [id]: false,
-            [`${id}_message`]: "",
+          }));
+
+          setErrorMessage((prev) => ({
+            ...prev,
+            [id]: `Please enter a ${id}`,
           }));
           return;
         }
@@ -69,13 +84,21 @@ function Contact() {
           setFormError((prev) => ({
             ...prev,
             [id]: true,
-            [`${id}_message`]: "Please input a valid email",
+          }));
+
+          setErrorMessage((prev) => ({
+            ...prev,
+            [id]: `Please enter a ${id}`,
           }));
         } else {
           setFormError((prev) => ({
             ...prev,
             [id]: false,
-            [`${id}_message`]: "",
+          }));
+
+          setErrorMessage((prev) => ({
+            ...prev,
+            [id]: `Please enter a ${id}`,
           }));
           return;
         }
@@ -86,6 +109,10 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  function joinClass(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
 
   return (
     <div className="view w-11/12 md:w-8/12 xl:w-5/12 m-auto">
@@ -100,14 +127,19 @@ function Contact() {
             <label htmlFor="firstname">First Name</label>
             <input
               id="firstname"
-              className="border rounded-lg px-3 py-2 mt-2 focus:outline outline-sky-200"
+              className={joinClass(
+                formError.firstname
+                  ? "outline-red-200 border border-red-300 bg-form-error"
+                  : "outline-sky-200",
+                "border rounded-lg px-3 py-2 mt-2 focus:outline"
+              )}
               placeholder="Enter your first name"
               value={formState.firstname}
               onChange={(e) => handleChange(e)}
             />
             {formError.firstname ? (
               <small className="text-sm text-red-400 mt-2">
-                {formError.firstname_message}
+                {errorMessages.firstname}
               </small>
             ) : null}
           </div>
@@ -115,14 +147,19 @@ function Contact() {
             <label htmlFor="lastname">Last Name</label>
             <input
               id="lastname"
-              className="border rounded-lg px-3 py-2 mt-2 focus:outline outline-sky-200"
+              className={joinClass(
+                formError.lastname
+                  ? "outline-red-200 border border-red-300 bg-form-error"
+                  : "outline-sky-200",
+                "border rounded-lg px-3 py-2 mt-2 focus:outline"
+              )}
               placeholder="Enter your last name"
               value={formState.lastname}
               onChange={(e) => handleChange(e)}
             />
             {formError.lastname ? (
               <small className="text-sm text-red-400 mt-2">
-                {formError.lastname_message}
+                {errorMessages.lastname}
               </small>
             ) : null}
           </div>
@@ -132,14 +169,19 @@ function Contact() {
           <input
             id="email"
             type="email"
-            className="border rounded-lg px-3 py-2 mt-2 focus:outline outline-sky-200"
+            className={joinClass(
+              formError.email
+                ? "outline-red-200 border border-red-300 bg-form-error"
+                : "outline-sky-200",
+              "border rounded-lg px-3 py-2 mt-2 focus:outline"
+            )}
             placeholder="youremail@gmail.com"
             value={formState.email}
             onChange={(e) => handleChange(e)}
           />
           {formError.email ? (
             <small className="text-sm text-red-400 mt-2">
-              {formError.email_message}
+              {errorMessages.email}
             </small>
           ) : null}
         </div>
@@ -147,14 +189,19 @@ function Contact() {
           <label htmlFor="message">Message</label>
           <textarea
             id="message"
-            className="border rounded-lg px-3 py-2 mt-2 h-32 focus:outline outline-sky-200"
+            className={joinClass(
+              formError.message
+                ? "outline-red-200 border border-red-300 bg-form-error"
+                : "outline-sky-200",
+              "border rounded-lg px-3 py-2 mt-2 h-32 focus:outline"
+            )}
             placeholder="Send me a message and I'll reply you as soon as possible..."
             value={formState.message}
             onChange={(e) => handleChange(e)}
           />
           {formError.message ? (
             <small className="text-sm text-red-400 mt-2">
-              {formError.message_message}
+              {errorMessages.message}
             </small>
           ) : null}
         </div>
@@ -165,11 +212,10 @@ function Contact() {
           }
         >
           <div
-            className={
-              formError.agreed
-                ? "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center border-sky-600"
-                : "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
-            }
+            className={joinClass(
+              formError.agreed ? "border-sky-600" : "",
+              "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
+            )}
           >
             {formError.agreed ? (
               <svg
