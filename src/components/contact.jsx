@@ -270,7 +270,7 @@ function Contact() {
           ) : null}
         </div>
         <button
-          id="btn_submit"
+          id="btn__submit"
           type="submit"
           className="rounded-md text-white bg-blue-600 hover:bg-blue-700 bg-form py-4"
         >
