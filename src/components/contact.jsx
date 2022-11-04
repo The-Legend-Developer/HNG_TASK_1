@@ -8,14 +8,6 @@ function Contact() {
     message: "",
   });
 
-  const [formError, setFormError] = useState({
-    firstname: false,
-    lastname: false,
-    email: false,
-    message: false,
-    agreed: false,
-  });
-
   const [errorMessages, setErrorMessage] = useState({
     firstname: "",
     lastname: "",
@@ -38,11 +30,6 @@ function Contact() {
 
   const verifyValue = (e, id) => {
     if (!e.target.value || e.target.value.length === 0) {
-      setFormError((prev) => ({
-        ...prev,
-        [id]: true,
-      }));
-
       setErrorMessage((prev) => ({
         ...prev,
         [id]: `Please enter a ${id}`,
@@ -54,24 +41,14 @@ function Contact() {
       case "firstname":
       case "lastname":
         if (!e.target.value.match(/^[a-zA-Z\s]+$/)) {
-          setFormError((prev) => ({
-            ...prev,
-            [id]: true,
-          }));
-
           setErrorMessage((prev) => ({
             ...prev,
             [id]: `Please enter a ${id}`,
           }));
         } else {
-          setFormError((prev) => ({
-            ...prev,
-            [id]: false,
-          }));
-
           setErrorMessage((prev) => ({
             ...prev,
-            [id]: `Please enter a ${id}`,
+            [id]: "",
           }));
           return;
         }
@@ -81,24 +58,14 @@ function Contact() {
           /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
         if (!e.target.value.match(mail_format)) {
-          setFormError((prev) => ({
-            ...prev,
-            [id]: true,
-          }));
-
           setErrorMessage((prev) => ({
             ...prev,
             [id]: `Please enter a ${id}`,
           }));
         } else {
-          setFormError((prev) => ({
-            ...prev,
-            [id]: false,
-          }));
-
           setErrorMessage((prev) => ({
             ...prev,
-            [id]: `Please enter a ${id}`,
+            [id]: "",
           }));
           return;
         }
@@ -128,7 +95,7 @@ function Contact() {
             <input
               id="firstname"
               className={joinClass(
-                formError.firstname
+                errorMessages.firstname !== ""
                   ? "outline-red-200 border border-red-300 bg-form-error"
                   : "outline-sky-200",
                 "border rounded-lg px-3 py-2 mt-2 focus:outline"
@@ -137,7 +104,7 @@ function Contact() {
               value={formState.firstname}
               onChange={(e) => handleChange(e)}
             />
-            {formError.firstname ? (
+            {errorMessages.firstname !== "" ? (
               <small className="text-sm text-red-400 mt-2">
                 {errorMessages.firstname}
               </small>
@@ -148,7 +115,7 @@ function Contact() {
             <input
               id="lastname"
               className={joinClass(
-                formError.lastname
+                errorMessages.lastname !== ""
                   ? "outline-red-200 border border-red-300 bg-form-error"
                   : "outline-sky-200",
                 "border rounded-lg px-3 py-2 mt-2 focus:outline"
@@ -157,7 +124,7 @@ function Contact() {
               value={formState.lastname}
               onChange={(e) => handleChange(e)}
             />
-            {formError.lastname ? (
+            {errorMessages.lastname !== "" ? (
               <small className="text-sm text-red-400 mt-2">
                 {errorMessages.lastname}
               </small>
@@ -170,7 +137,7 @@ function Contact() {
             id="email"
             type="email"
             className={joinClass(
-              formError.email
+              errorMessages.email !== ""
                 ? "outline-red-200 border border-red-300 bg-form-error"
                 : "outline-sky-200",
               "border rounded-lg px-3 py-2 mt-2 focus:outline"
@@ -179,7 +146,7 @@ function Contact() {
             value={formState.email}
             onChange={(e) => handleChange(e)}
           />
-          {formError.email ? (
+          {errorMessages.email !== "" ? (
             <small className="text-sm text-red-400 mt-2">
               {errorMessages.email}
             </small>
@@ -190,7 +157,7 @@ function Contact() {
           <textarea
             id="message"
             className={joinClass(
-              formError.message
+              errorMessages.message !== ""
                 ? "outline-red-200 border border-red-300 bg-form-error"
                 : "outline-sky-200",
               "border rounded-lg px-3 py-2 mt-2 h-32 focus:outline"
@@ -199,7 +166,7 @@ function Contact() {
             value={formState.message}
             onChange={(e) => handleChange(e)}
           />
-          {formError.message ? (
+          {errorMessages.message !== "" ? (
             <small className="text-sm text-red-400 mt-2">
               {errorMessages.message}
             </small>
@@ -208,16 +175,16 @@ function Contact() {
         <div
           className="flex gap-3 lg:items-center mb-4 cursor-pointer"
           onClick={() =>
-            setFormError((prev) => ({ ...prev, ["agreed"]: !prev.agreed }))
+            setErrorMessage((prev) => ({ ...prev, ["agreed"]: !prev.agreed }))
           }
         >
           <div
             className={joinClass(
-              formError.agreed ? "border-sky-600" : "",
+              errorMessages.agreed !== "" ? "border-sky-600" : "",
               "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
             )}
           >
-            {formError.agreed ? (
+            {errorMessages.agreed !== "" ? (
               <svg
                 width="12"
                 height="9"
