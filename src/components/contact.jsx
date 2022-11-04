@@ -3,16 +3,16 @@ import { useState } from "react";
 
 function Contact() {
   const [formState, setFormState] = useState({
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     email: "",
     message: "",
     agreed: false,
   });
 
   const [errorMessages, setErrorMessage] = useState({
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     email: "",
     message: "",
     agreed: "",
@@ -61,8 +61,8 @@ function Contact() {
           [id]: "",
         }));
         break;
-      case "firstname":
-      case "lastname":
+      case "first_name":
+      case "last_name":
         if (!value.match(/^[a-zA-Z\s]+$/)) {
           setErrorMessage((prev) => ({
             ...prev,
@@ -106,8 +106,8 @@ function Contact() {
       setResponse(true);
 
       setFormState({
-        firstname: "",
-        lastname: "",
+        first_name: "",
+        last_name: "",
         email: "",
         message: "",
         agreed: false,
@@ -145,42 +145,42 @@ function Contact() {
       >
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex flex-col lg:w-1/2">
-            <label htmlFor="firstname">First Name</label>
+            <label htmlFor="first_name">First Name</label>
             <input
-              id="firstname"
+              id="first_name"
               className={joinClass(
-                errorMessages.firstname !== ""
+                errorMessages.first_name !== ""
                   ? "outline-red-200 border border-red-300 bg-form-error"
                   : "outline-sky-200",
                 "border rounded-lg px-3 py-2 mt-2 focus:outline"
               )}
               placeholder="Enter your first name"
-              value={formState.firstname}
+              value={formState.first_name}
               onChange={(e) => handleChange(e)}
             />
-            {errorMessages.firstname !== "" ? (
+            {errorMessages.first_name !== "" ? (
               <small className="text-sm text-red-400 mt-2">
-                {errorMessages.firstname}
+                {errorMessages.first_name}
               </small>
             ) : null}
           </div>
           <div className="flex flex-col lg:w-1/2">
-            <label htmlFor="lastname">Last Name</label>
+            <label htmlFor="last_name">Last Name</label>
             <input
-              id="lastname"
+              id="last_name"
               className={joinClass(
-                errorMessages.lastname !== ""
+                errorMessages.last_name !== ""
                   ? "outline-red-200 border border-red-300 bg-form-error"
                   : "outline-sky-200",
                 "border rounded-lg px-3 py-2 mt-2 focus:outline"
               )}
               placeholder="Enter your last name"
-              value={formState.lastname}
+              value={formState.last_name}
               onChange={(e) => handleChange(e)}
             />
-            {errorMessages.lastname !== "" ? (
+            {errorMessages.last_name !== "" ? (
               <small className="text-sm text-red-400 mt-2">
-                {errorMessages.lastname}
+                {errorMessages.last_name}
               </small>
             ) : null}
           </div>
@@ -270,6 +270,7 @@ function Contact() {
           ) : null}
         </div>
         <button
+          id="btn_submit"
           type="submit"
           className="rounded-md text-white bg-blue-600 hover:bg-blue-700 bg-form py-4"
         >
