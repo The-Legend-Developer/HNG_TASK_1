@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 function Contact() {
@@ -6,6 +7,7 @@ function Contact() {
     lastname: "",
     email: "",
     message: "",
+    agreed: false,
   });
 
   const [errorMessages, setErrorMessage] = useState({
@@ -29,8 +31,12 @@ function Contact() {
     verifyValue(inputValue, id);
   };
 
+  useEffect(() => {
+    setErrorMessage((prev) => ({ ...prev, ["agreed"]: !prev.agreed }));
+  }, [formState.agreed]);
+
   const verifyValue = (value, id) => {
-    if (!value || value.length === 0) {
+    if (value.length === 0) {
       setErrorMessage((prev) => ({
         ...prev,
         [id]: `Please enter a ${id}`,
@@ -38,7 +44,21 @@ function Contact() {
       return;
     }
 
+    if (!value) {
+      setErrorMessage((prev) => ({
+        ...prev,
+        [id]: `Please agree to the terms and policy in order to submit this form`,
+      }));
+      return;
+    }
+
     switch (id) {
+      default:
+        setErrorMessage((prev) => ({
+          ...prev,
+          [id]: "",
+        }));
+        break;
       case "firstname":
       case "lastname":
         if (!value.match(/^[a-zA-Z\s]+$/)) {
@@ -77,13 +97,10 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    function verifyComplete(arr) {
-      return Object.values(arr).every((element) => {
-        element !== "";
-      });
-    }
+    const verifyComplete = (arr) =>
+      Object.values(arr).every((element) => element !== "" && element);
 
-    if (verifyComplete(errorMessages)) {
+    if (verifyComplete(formState)) {
       console.log("michael done");
     } else {
       const objName = Object.getOwnPropertyNames(formState);
@@ -188,39 +205,48 @@ function Contact() {
             </small>
           ) : null}
         </div>
-        <div
-          className="flex gap-3 lg:items-center mb-4 cursor-pointer"
-          onClick={() =>
-            setErrorMessage((prev) => ({ ...prev, ["agreed"]: !prev.agreed }))
-          }
-        >
+        <div className="mb-4">
           <div
-            className={joinClass(
-              errorMessages.agreed !== "" ? "border-sky-600" : "",
-              "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
-            )}
+            className="flex gap-3 lg:items-center cursor-pointer"
+            onClick={() =>
+              setFormState((prev) => ({ ...prev, ["agreed"]: !prev.agreed }))
+            }
           >
-            {errorMessages.agreed !== "" ? (
-              <svg
-                width="12"
-                height="9"
-                viewBox="0 0 12 9"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.6668 1.5L4.25016 7.91667L1.3335 5"
-                  stroke="#1570EF"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            ) : null}
+            <div
+              className={joinClass(
+                formState.agreed ? "border-sky-600" : "",
+                "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
+              )}
+            >
+              {formState.agreed ? (
+                <svg
+                  width="12"
+                  height="9"
+                  viewBox="0 0 12 9"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10.6668 1.5L4.25016 7.91667L1.3335 5"
+                    stroke="#1570EF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              ) : null}
+            </div>
+            <p className="w-full">
+              You agree to providing your data to {`{name}`} who may contact
+              you.
+            </p>
           </div>
-          <p className="w-full">
-            You agree to providing your data to {`{name}`} who may contact you.
-          </p>
+
+          {!formState.agreed ? (
+            <small className="text-sm text-red-400 mt-2 block">
+              {errorMessages.agreed}
+            </small>
+          ) : null}
         </div>
         <button
           type="submit"
