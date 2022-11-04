@@ -10,12 +10,16 @@ function Contact() {
 
   const [formError, setFormError] = useState({
     firstname: false,
+    firstname_message: "",
     lastname: false,
+    lastname_message: "",
     email: false,
+    email_message: "",
     message: false,
+    message_message: "",
+    agreed: false,
+    agreed_message: "",
   });
-
-  const [agreed, setAgreed] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -25,6 +29,58 @@ function Contact() {
       ...prev,
       [id]: e.target.value,
     }));
+
+    verifyValue(e, id);
+  };
+
+  const verifyValue = (e, id) => {
+    if (!e.target.value || e.target.value.length === 0) {
+      setFormError((prev) => ({
+        ...prev,
+        [id]: true,
+        [`${id}_message`]: `Please enter a ${id}`,
+      }));
+      return;
+    }
+
+    switch (id) {
+      case "firstname":
+      case "lastname":
+        if (!e.target.value.match(/^[a-zA-Z\s]+$/)) {
+          setFormError((prev) => ({
+            ...prev,
+            [id]: true,
+            [`${id}_message`]: "Wrong format, alphabets only",
+          }));
+        } else {
+          setFormError((prev) => ({
+            ...prev,
+            [id]: false,
+            [`${id}_message`]: "",
+          }));
+          return;
+        }
+        break;
+      case "email":
+        const mail_format =
+          /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+
+        if (!e.target.value.match(mail_format)) {
+          setFormError((prev) => ({
+            ...prev,
+            [id]: true,
+            [`${id}_message`]: "Please input a valid email",
+          }));
+        } else {
+          setFormError((prev) => ({
+            ...prev,
+            [id]: false,
+            [`${id}_message`]: "",
+          }));
+          return;
+        }
+        break;
+    }
   };
 
   const handleSubmit = (e) => {
@@ -49,6 +105,11 @@ function Contact() {
               value={formState.firstname}
               onChange={(e) => handleChange(e)}
             />
+            {formError.firstname ? (
+              <small className="text-sm text-red-400 mt-2">
+                {formError.firstname_message}
+              </small>
+            ) : null}
           </div>
           <div className="flex flex-col lg:w-1/2">
             <label htmlFor="lastname">Last Name</label>
@@ -59,6 +120,11 @@ function Contact() {
               value={formState.lastname}
               onChange={(e) => handleChange(e)}
             />
+            {formError.lastname ? (
+              <small className="text-sm text-red-400 mt-2">
+                {formError.lastname_message}
+              </small>
+            ) : null}
           </div>
         </div>
         <div className="flex flex-col">
@@ -71,6 +137,11 @@ function Contact() {
             value={formState.email}
             onChange={(e) => handleChange(e)}
           />
+          {formError.email ? (
+            <small className="text-sm text-red-400 mt-2">
+              {formError.email_message}
+            </small>
+          ) : null}
         </div>
         <div className="flex flex-col">
           <label htmlFor="message">Message</label>
@@ -81,19 +152,26 @@ function Contact() {
             value={formState.message}
             onChange={(e) => handleChange(e)}
           />
+          {formError.message ? (
+            <small className="text-sm text-red-400 mt-2">
+              {formError.message_message}
+            </small>
+          ) : null}
         </div>
         <div
           className="flex gap-3 lg:items-center mb-4 cursor-pointer"
-          onClick={() => setAgreed((prev) => !prev)}
+          onClick={() =>
+            setFormError((prev) => ({ ...prev, ["agreed"]: !prev.agreed }))
+          }
         >
           <div
             className={
-              agreed
+              formError.agreed
                 ? "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center border-sky-600"
                 : "h-5 w-5 border rounded-md cursor-pointer bg-form flex items-center justify-center"
             }
           >
-            {agreed ? (
+            {formError.agreed ? (
               <svg
                 width="12"
                 height="9"
