@@ -258,7 +258,7 @@ function Contact() {
               ) : null}
             </div>
             <p className="w-full">
-              You agree to providing your data to {`{name}`} who may contact
+              You agree to providing your data to CodeMon who may contact
               you.
             </p>
           </div>
