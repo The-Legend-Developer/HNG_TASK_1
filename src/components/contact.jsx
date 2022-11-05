@@ -228,9 +228,9 @@ function Contact() {
         </div>
         <div className="mb-4">
           <div
-            className="flex gap-3 lg:items-center cursor-pointer"
+            className="flex gap-3 items-center cursor-pointer"
             onClick={() =>
-              setFormState((prev) => ({ ...prev, ["agreed"]: !prev.agreed }))
+              setFormState((prev) => ...prev, ["agreed"]: !prev.agreed }))
             }
           >
             <div
@@ -257,7 +257,7 @@ function Contact() {
                 </svg>
               ) : null}
             </div>
-            <p className="w-full">
+            <p className="w-full text-xs lg:text-sm">
               You agree to providing your data to CodeMon who may contact
               you.
             </p>
